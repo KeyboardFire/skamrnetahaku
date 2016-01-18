@@ -1,7 +1,7 @@
 *
 !.gitignore
 !src
-!src/*
+!src/*.c
 !dat
 !dat/*
 !LOJ_PROGRESS.txt

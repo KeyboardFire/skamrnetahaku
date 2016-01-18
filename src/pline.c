@@ -159,7 +159,7 @@ VA_DECL(const char *, line)
     char *tmp;
     VA_START(line);
     VA_INIT(line, const char *);
-    vpline(YouMessage(tmp, "You ", line), VA_ARGS);
+    vpline(YouMessage(tmp, ".i do ", line), VA_ARGS);
     VA_END();
 }
 
@@ -170,10 +170,14 @@ VA_DECL(const char *, line)
     char *tmp;
     VA_START(line);
     VA_INIT(line, const char *);
-    vpline(YouMessage(tmp, "Your ", line), VA_ARGS);
+    vpline(YouMessage(tmp, ".i lo do ", line), VA_ARGS);
     VA_END();
 }
 
+// LOJBAN TRANSLATION NOTE
+// "Feel" is an ambiguous word. REMOVE ALL CALLS TO YOU_FEEL AND REPLACE THEM
+// WITH CALLS TO YOU. This function will be removed / commented out once that
+// is done.
 /*VARARGS1*/
 void You_feel
 VA_DECL(const char *, line)
@@ -196,7 +200,7 @@ VA_DECL(const char *, line)
     char *tmp;
     VA_START(line);
     VA_INIT(line, const char *);
-    vpline(YouMessage(tmp, "You can't ", line), VA_ARGS);
+    vpline(YouMessage(tmp, ".i do na kakne ", line), VA_ARGS);
     VA_END();
 }
 
@@ -207,10 +211,14 @@ VA_DECL(const char *, line)
     char *tmp;
     VA_START(line);
     VA_INIT(line, const char *);
-    vpline(YouMessage(tmp, "The ", line), VA_ARGS);
+    vpline(YouMessage(tmp, ".i lo ", line), VA_ARGS);
     VA_END();
 }
 
+// LOJBAN TRANSLATION NOTE
+// This simply doesn't translate properly. REMOVE ALL CALLS TO THERE AND
+// REPLACE THEM WITH CALLS TO PLINE. This function will be removed / commented
+// out once that is done.
 /*VARARGS1*/
 void There
 VA_DECL(const char *, line)
@@ -233,11 +241,11 @@ VA_DECL(const char *, line)
     VA_START(line);
     VA_INIT(line, const char *);
     if (Underwater)
-        YouPrefix(tmp, "You barely hear ", line);
+        YouPrefix(tmp, ".i do ja'aru'e tirna ", line);
     else if (Unaware)
-        YouPrefix(tmp, "You dream that you hear ", line);
+        YouPrefix(tmp, ".i do senva lonu tirna ", line);
     else
-        YouPrefix(tmp, "You hear ", line);
+        YouPrefix(tmp, ".i do tirna ", line);
     vpline(strcat(tmp, line), VA_ARGS);
     VA_END();
 }
@@ -251,11 +259,11 @@ VA_DECL(const char *, line)
     VA_START(line);
     VA_INIT(line, const char *);
     if (Unaware)
-        YouPrefix(tmp, "You dream that you see ", line);
+        YouPrefix(tmp, ".i do senva lonu viska ", line);
     else if (Blind) /* caller should have caught this... */
-        YouPrefix(tmp, "You sense ", line);
+        YouPrefix(tmp, ".i do ganse ", line);
     else
-        YouPrefix(tmp, "You see ", line);
+        YouPrefix(tmp, ".i do viska ", line);
     vpline(strcat(tmp, line), VA_ARGS);
     VA_END();
 }
@@ -272,10 +280,10 @@ VA_DECL(const char *, line)
 
     VA_START(line);
     VA_INIT(line, const char *);
-    tmp = You_buf((int) strlen(line) + sizeof "\"\"");
-    Strcpy(tmp, "\"");
+    tmp = You_buf((int) strlen(line) + sizeof "lu  li'u");
+    Strcpy(tmp, "lu ");
     Strcat(tmp, line);
-    Strcat(tmp, "\"");
+    Strcat(tmp, " li'u");
     vpline(tmp, VA_ARGS);
     VA_END();
 }
@@ -348,7 +356,7 @@ VA_DECL(const char *, s)
     pbuf[BUFSZ - 1] = '\0'; /* sanity */
     paniclog("impossible", pbuf);
     pline("%s", pbuf);
-    pline("Program in disorder - perhaps you'd better #quit.");
+    pline(".i kalsa samyzilkei .i lonu do ciska zoi gy. #quit .gy cu xamgu cu cumki");  // LOJTODO extended commands
     program_state.in_impossible = 0;
     VA_END();
 }
@@ -359,15 +367,15 @@ aligntyp alignment;
 {
     switch ((int) alignment) {
     case A_CHAOTIC:
-        return "chaotic";
+        return "palci";
     case A_NEUTRAL:
-        return "neutral";
+        return "nutli";
     case A_LAWFUL:
-        return "lawful";
+        return "vrude";
     case A_NONE:
-        return "unaligned";
+        return "caurmarde";
     }
-    return "unknown";
+    return "caurju'o";
 }
 
 void
@@ -379,87 +387,88 @@ register struct monst *mtmp;
 
     info[0] = 0;
     if (mtmp->mtame) {
-        Strcat(info, ", tame");
+        Strcat(info, " gi'e tolcilce");
         if (wizard) {
-            Sprintf(eos(info), " (%d", mtmp->mtame);
+            Sprintf(eos(info), " to %d", mtmp->mtame); // LOJTODO numbers
             if (!mtmp->isminion)
-                Sprintf(eos(info), "; hungry %ld; apport %d",
+                Sprintf(eos(info), " gi'e xagji %ld gi'e klagaudji %d",
                         EDOG(mtmp)->hungrytime, EDOG(mtmp)->apport);
-            Strcat(info, ")");
+            Strcat(info, " toi");
         }
     } else if (mtmp->mpeaceful)
-        Strcat(info, ", peaceful");
+        Strcat(info, " gi'e nalcilce");
     if (mtmp->cham >= LOW_PM && mtmp->data != &mons[mtmp->cham])
         /* don't reveal the innate form (chameleon, vampire, &c),
            just expose the fact that this current form isn't it */
-        Strcat(info, ", shapechanger");
+        Strcat(info, " gi'e ficybi'o");
     /* pets eating mimic corpses mimic while eating, so this comes first */
     if (mtmp->meating)
-        Strcat(info, ", eating");
+        Strcat(info, " gi'e citka");
     /* a stethoscope exposes mimic before getting here so this
        won't be relevant for it, but wand of probing doesn't */
     if (mtmp->m_ap_type)
-        Sprintf(eos(info), ", mimicking %s",
+        Sprintf(eos(info), " gi'e simsa %s",
                 (mtmp->m_ap_type == M_AP_FURNITURE)
                     ? an(defsyms[mtmp->mappearance].explanation)
                     : (mtmp->m_ap_type == M_AP_OBJECT)
                           ? ((mtmp->mappearance == GOLD_PIECE)
-                                 ? "gold"
+                                 ? "lo solji"
                                  : an(simple_typename(mtmp->mappearance)))
                           : (mtmp->m_ap_type == M_AP_MONSTER)
                                 ? an(mons[mtmp->mappearance].mname)
                                 : something); /* impossible... */
     if (mtmp->mcan)
-        Strcat(info, ", cancelled");
+        Strcat(info, " gi'e selvi'umakfa");
     if (mtmp->mconf)
-        Strcat(info, ", confused");
+        Strcat(info, " gi'e selfi'u");
     if (mtmp->mblinded || !mtmp->mcansee)
-        Strcat(info, ", blind");
+        Strcat(info, " gi'e vistolka'e");
     if (mtmp->mstun)
-        Strcat(info, ", stunned");
+        Strcat(info, " gi'e seljenca");
     if (mtmp->msleeping)
-        Strcat(info, ", asleep");
+        Strcat(info, " gi'e sipna");
 #if 0 /* unfortunately mfrozen covers temporary sleep and being busy \
          (donning armor, for instance) as well as paralysis */
 	else if (mtmp->mfrozen)	  Strcat(info, ", paralyzed");
 #else
     else if (mtmp->mfrozen || !mtmp->mcanmove)
-        Strcat(info, ", can't move");
+        Strcat(info, " gi'e muvtolka'e");
 #endif
     /* [arbitrary reason why it isn't moving] */
     else if (mtmp->mstrategy & STRAT_WAITMASK)
-        Strcat(info, ", meditating");
+        Strcat(info, " gi'e tsapei");
     if (mtmp->mflee)
-        Strcat(info, ", scared");
+        Strcat(info, " gi'e terpa");
     if (mtmp->mtrapped)
-        Strcat(info, ", trapped");
+        Strcat(info, " gi'e selkavbu");
     if (mtmp->mspeed)
-        Strcat(info, mtmp->mspeed == MFAST ? ", fast" : mtmp->mspeed == MSLOW
-                                                            ? ", slow"
-                                                            : ", ???? speed");
+        Strcat(info, mtmp->mspeed == MFAST ? " gi'e sutra" : mtmp->mspeed == MSLOW
+                                                            ? " gi'e masno"
+                                                            : ", ???? speed"); // LOJTODO
     if (mtmp->mundetected)
-        Strcat(info, ", concealed");
+        Strcat(info, " gi'e zilmipri");
     if (mtmp->minvis)
-        Strcat(info, ", invisible");
+        Strcat(info, " gi'e selvisnalka'e");
     if (mtmp == u.ustuck)
         Strcat(info, sticks(youmonst.data)
-                         ? ", held by you"
-                         : !u.uswallow ? ", holding you"
+                         ? " gi'e seljai do"
+                         : !u.uswallow ? " gi'e jgari do"
                                        : attacktype_fordmg(u.ustuck->data,
                                                            AT_ENGL, AD_DGST)
-                                             ? ", digesting you"
+                                             ? " gi'e djaruntygau do"
                                              : is_animal(u.ustuck->data)
-                                                   ? ", swallowing you"
-                                                   : ", engulfing you");
+                                                   ? " gi'e tulcti do"
+                                                   : " gi'e tunlo do");
     if (mtmp == u.usteed)
-        Strcat(info, ", carrying you");
+        Strcat(info, " gi'e marce do");
 
     /* avoid "Status of the invisible newt ..., invisible" */
     /* and unlike a normal mon_nam, use "saddled" even if it has a name */
     Strcpy(monnambuf, x_monnam(mtmp, ARTICLE_THE, (char *) 0,
                                (SUPPRESS_IT | SUPPRESS_INVISIBLE), FALSE));
 
-    pline("Status of %s (%s):  Level %d  HP %d(%d)  AC %d%s.", monnambuf,
+    // LOJTODO numbers
+    pline(".i %s to %s toi zo'u %d crena'u gi'e %d to %d toi ka'orna'u gi'e %d dabycakna'u%s", monnambuf,
           align_str(alignment), mtmp->m_lev, mtmp->mhp, mtmp->mhpmax,
           find_mac(mtmp), info);
 }
@@ -471,76 +480,77 @@ ustatusline()
 
     info[0] = '\0';
     if (Sick) {
-        Strcat(info, ", dying from");
+        Strcat(info, " gi'e zilcatra");
         if (u.usick_type & SICK_VOMITABLE)
-            Strcat(info, " food poisoning");
+            Strcat(info, " lo djavindu");
         if (u.usick_type & SICK_NONVOMITABLE) {
             if (u.usick_type & SICK_VOMITABLE)
-                Strcat(info, " and");
-            Strcat(info, " illness");
+                Strcat(info, " .e");
+            Strcat(info, " lo kambi'a");
         }
     }
     if (Stoned)
-        Strcat(info, ", solidifying");
+        Strcat(info, " gi'e rokybi'o");
     if (Slimed)
-        Strcat(info, ", becoming slimy");
+        Strcat(info, " gi'e pexybi'o");
     if (Strangled)
-        Strcat(info, ", being strangled");
+        Strcat(info, " gi'e vaxseldicra");
     if (Vomiting)
-        Strcat(info, ", nauseated"); /* !"nauseous" */
+        Strcat(info, " gi'e rigbi'a"); /* !"nauseous" */
     if (Confusion)
-        Strcat(info, ", confused");
+        Strcat(info, " gi'e selfi'u");
     if (Blind) {
-        Strcat(info, ", blind");
+        Strcat(info, " gi'e vistolka'e");
         if (u.ucreamed) {
+            Strcat(info, " ri'a");
             if ((long) u.ucreamed < Blinded || Blindfolded
                 || !haseyes(youmonst.data))
-                Strcat(info, ", cover");
-            Strcat(info, "ed by sticky goop");
+                Strcat(info, " loza'i selgai");
+            Strcat(info, " lo nipypesxu");
         } /* note: "goop" == "glop"; variation is intentional */
     }
     if (Stunned)
-        Strcat(info, ", stunned");
+        Strcat(info, " gi'e seljenca");
     if (!u.usteed && Wounded_legs) {
         const char *what = body_part(LEG);
         if ((Wounded_legs & BOTH_SIDES) == BOTH_SIDES)
             what = makeplural(what);
-        Sprintf(eos(info), ", injured %s", what);
+        Sprintf(eos(info), " gi'e selxai sedi'o %s", what);
     }
     if (Glib)
-        Sprintf(eos(info), ", slippery %s", makeplural(body_part(HAND)));
+        Sprintf(eos(info), " gi'e salsfe sedi'o %s", makeplural(body_part(HAND)));
     if (u.utrap)
-        Strcat(info, ", trapped");
+        Strcat(info, " gi'e selkavbu");
     if (Fast)
-        Strcat(info, Very_fast ? ", very fast" : ", fast");
+        Strcat(info, Very_fast ? " gi'e mutce sutra" : " gi'e sutra");
     if (u.uundetected)
-        Strcat(info, ", concealed");
+        Strcat(info, " gi'e zilmipri");
     if (Invis)
-        Strcat(info, ", invisible");
+        Strcat(info, " gi'e selvisnalka'e");
     if (u.ustuck) {
         if (sticks(youmonst.data))
-            Strcat(info, ", holding ");
+            Strcat(info, " gi'e jgari ");
         else
-            Strcat(info, ", held by ");
+            Strcat(info, " gi'e seljai ");
         Strcat(info, mon_nam(u.ustuck));
     }
 
-    pline("Status of %s (%s%s):  Level %d  HP %d(%d)  AC %d%s.", plname,
+    pline(".i %s to %s%s toi zo'u %d crena'u gi'e %d to %d toi ka'orna'u gi'e %d dabycakna'u%s", plname,
           (u.ualign.record >= 20)
-              ? "piously "
+              ? "traji censa "
               : (u.ualign.record > 13)
-                    ? "devoutly "
+                    ? "mutce censa "
                     : (u.ualign.record > 8)
-                          ? "fervently "
+                          ? "censa "
                           : (u.ualign.record > 3)
-                                ? "stridently "
+                                ? "milxe censa "
                                 : (u.ualign.record == 3)
                                       ? ""
                                       : (u.ualign.record >= 1)
-                                            ? "haltingly "
+                                            ? "no'e censa "
                                             : (u.ualign.record == 0)
-                                                  ? "nominally "
-                                                  : "insufficiently ",
+                                                  ? "na'e censa "
+                                                  : "to'e censa ",
           align_str(u.ualign.type),
           Upolyd ? mons[u.umonnum].mlevel : u.ulevel, Upolyd ? u.mh : u.uhp,
           Upolyd ? u.mhmax : u.uhpmax, u.uac, info);
@@ -549,10 +559,10 @@ ustatusline()
 void
 self_invis_message()
 {
-    pline("%s %s.",
-          Hallucination ? "Far out, man!  You" : "Gee!  All of a sudden, you",
-          See_invisible ? "can see right through yourself"
-                        : "can't see yourself");
+    pline("%s %s",
+          Hallucination ? ".i .uecaisaisai .ianaicaisai .o'ecu'i do" : ".i .ue do suska",
+          See_invisible ? "kakne lonu pa'o viska do"
+                        : "na kakne lonu viska do");
 }
 
 void
@@ -569,19 +579,19 @@ struct obj *otmp2;
     if ((!Blind && visible) || inpack) {
         if (Hallucination) {
             if (onfloor) {
-                You_see("parts of the floor melting!");
+                You_see("lomu'e lo pagbu be lo loldi cu runme");
             } else if (inpack) {
-                Your("pack reaches out and grabs something!");
+                Your("bakfu ze'o tcena gi'e jgari da");
             }
             /* even though we can see where they should be,
              * they'll be out of our view (minvent or container)
              * so don't actually show anything */
         } else if (onfloor || inpack) {
-            pline("The %s coalesce%s.", makeplural(obj_typename(otmp->otyp)),
-                  inpack ? " inside your pack" : "");
+            pline(".i lo %s jorne zi'o%s", makeplural(obj_typename(otmp->otyp)),
+                  inpack ? " di'o lo do bakfu" : "");
         }
     } else {
-        You_hear("a faint sloshing sound.");
+        You_hear("lo smaji sploici zei sance");
     }
 }
 
