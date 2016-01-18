@@ -23,9 +23,9 @@ STATIC_DCL void FDECL(center, (int, char *));
 static const char *rip_txt[] = {
     "                       ----------",
     "                      /          \\",
-    "                     /    REST    \\",
-    "                    /      IN      \\",
-    "                   /     PEACE      \\",
+    "                     /     .i     \\",
+    "                    /   ko panpi   \\",
+    "                   /  loza'i morsi  \\",
     "                  /                  \\",
     "                  |                  |", /* Name of player */
     "                  |                  |", /* Amount of $ */
@@ -107,7 +107,7 @@ time_t when;
     center(NAME_LINE, buf);
 
     /* Put $ on stone */
-    Sprintf(buf, "%ld Au", done_money);
+    Sprintf(buf, "%ld lo slosi'i", done_money); // LOJTODO number
     buf[STONE_LINE_LEN] = 0; /* It could be a *lot* of gold :-) */
     center(GOLD_LINE, buf);
 
@@ -138,7 +138,7 @@ time_t when;
 
     /* Put year on stone */
     year = yyyymmdd(when) / 10000L;
-    Sprintf(buf, "%4ld", year);
+    Sprintf(buf, "%4ld", year);  // LOJTODO number
     center(YEAR_LINE, buf);
 
     putstr(tmpwin, 0, "");
