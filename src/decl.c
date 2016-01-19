@@ -57,6 +57,7 @@ NEARDATA struct fruit *ffruit = (struct fruit *) 0;
 
 NEARDATA char tune[6] = DUMMY;
 
+// LOJTODO this stuff
 const char *occtxt = DUMMY;
 const char quitchars[] = " \r\n\033";
 const char vowels[] = "aeiouAEIOU";
@@ -212,50 +213,50 @@ NEARDATA struct monst *migrating_mons = (struct monst *) 0;
 NEARDATA struct mvitals mvitals[NUMMONS];
 
 NEARDATA struct c_color_names c_color_names = {
-    "black",  "amber", "golden", "light blue", "red",   "green",
-    "silver", "blue",  "purple", "white",      "orange"
+    "xekri",   "burpelxu", "sloska", "labybla", "xunre", "crino",
+    "rijyska", "blanu",    "zirpu",  "blabi",   "narju"
 };
 
 struct menucoloring *menu_colorings = NULL;
 
 const char *c_obj_colors[] = {
-    "black",          /* CLR_BLACK */
-    "red",            /* CLR_RED */
-    "green",          /* CLR_GREEN */
-    "brown",          /* CLR_BROWN */
-    "blue",           /* CLR_BLUE */
-    "magenta",        /* CLR_MAGENTA */
-    "cyan",           /* CLR_CYAN */
-    "gray",           /* CLR_GRAY */
-    "transparent",    /* no_color */
-    "orange",         /* CLR_ORANGE */
-    "bright green",   /* CLR_BRIGHT_GREEN */
-    "yellow",         /* CLR_YELLOW */
-    "bright blue",    /* CLR_BRIGHT_BLUE */
-    "bright magenta", /* CLR_BRIGHT_MAGENTA */
-    "bright cyan",    /* CLR_BRIGHT_CYAN */
-    "white",          /* CLR_WHITE */
+    "xekri",          /* CLR_BLACK */
+    "xunre"           /* CLR_RED */
+    "crino",          /* CLR_GREEN */
+    "bunre",          /* CLR_BROWN */
+    "blanu",          /* CLR_BLUE */
+    "nukni",          /* CLR_MAGENTA */
+    "cicna",          /* CLR_CYAN */
+    "grusi",          /* CLR_GRAY */
+    "klina",          /* no_color */
+    "narju",          /* CLR_ORANGE */
+    "labri'o",        /* CLR_BRIGHT_GREEN */
+    "pelxu",          /* CLR_YELLOW */
+    "labybla",        /* CLR_BRIGHT_BLUE */
+    "labnukni",       /* CLR_BRIGHT_MAGENTA */
+    "labycicna",      /* CLR_BRIGHT_CYAN */
+    "blabi",          /* CLR_WHITE */
 };
 
-struct c_common_strings c_common_strings = { "Nothing happens.",
-                                             "That's enough tries!",
-                                             "That is a silly thing to %s.",
-                                             "shudder for a moment.",
-                                             "something",
-                                             "Something",
-                                             "You can move again.",
-                                             "Never mind.",
-                                             "vision quickly clears.",
-                                             { "the", "your" } };
+struct c_common_strings c_common_strings = { ".i noda cfari",  // nothing happens
+                                             ".i rau lo troci",  // that's enough tries
+                                             ".i bebna lonu %s ta",  // that is a silly thing to [x]
+                                             "ze'i desku",  // shudder for a moment
+                                             "da",  // something
+                                             "da",  // Something
+                                             ".i do di'a kakne lonu muvdu",  // you can move again
+                                             ".i ta'ei",  // never mind
+                                             "kamviska cu sutra zilxru",  // vision quickly clears
+                                             { "lo", "lo do" } };  // the, your
 
 /* NOTE: the order of these words exactly corresponds to the
    order of oc_material values #define'd in objclass.h. */
-const char *materialnm[] = { "mysterious", "liquid",  "wax",        "organic",
-                             "flesh",      "paper",   "cloth",      "leather",
-                             "wooden",     "bone",    "dragonhide", "iron",
-                             "metal",      "copper",  "silver",     "gold",
-                             "platinum",   "mithril", "plastic",    "glass",
-                             "gemstone",   "stone" };
+const char *materialnm[] = { "cizra", "litki", "lakse", "mivyselkra",
+                             "rectu", "pelji", "bukpu", "bakskapi",
+                             "mudri", "bongu", "drakono zei skapi", "tirse",
+                             "jinme", "tunka", "rijno", "solji",
+                             "jinmrplati zei", "jinmrmitri zei", "slasi", "blaci",
+                             "jemna", "rokci" };
 
 /* Vision */
 NEARDATA boolean vision_full_recalc = 0;

@@ -196,7 +196,7 @@ const char *drainer; /* cause of death, if drain should be fatal */
         return;
 
     if (u.ulevel > 1) {
-        pline("%s level %d.", Goodbye(), u.ulevel--);
+        pline("%s lo crena'u be li %d", Goodbye(), u.ulevel--); // LOJTODO number
         /* remove intrinsic abilities */
         adjabil(u.ulevel + 1, u.ulevel);
         reset_rndmonst(NON_PM); /* new monster selection */
@@ -264,7 +264,7 @@ boolean incr; /* true iff via incremental experience growth */
     int hpinc, eninc;
 
     if (!incr)
-        You_feel("more experienced.");
+        You("ganse loka zenba loka certu");
 
     /* increase hit points (when polymorphed, do monster form first
        in order to retain normal human/whatever increase for later) */
@@ -295,7 +295,7 @@ boolean incr; /* true iff via incremental experience growth */
         ++u.ulevel;
         if (u.ulevelmax < u.ulevel)
             u.ulevelmax = u.ulevel;
-        pline("Welcome to experience level %d.", u.ulevel);
+        pline("fi'i ponse be lo crena'u be li %d", u.ulevel); // LOJTODO number
         adjabil(u.ulevel - 1, u.ulevel); /* give new intrinsics */
         reset_rndmonst(NON_PM);          /* new monster selection */
     }
