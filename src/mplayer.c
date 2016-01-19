@@ -16,26 +16,26 @@ STATIC_DCL void FDECL(mk_mplayer_armor, (struct monst *, SHORT_P));
  */
 static const char *developers[] = {
     /* devteam */
-    "Dave",    "Dean",   "Eric",    "Izchak", "Janet",    "Jessie",
-    "Ken",     "Kevin",  "Michael", "Mike",   "Pat",      "Paul",
-    "Steve",   "Timo",   "Warwick",
+    "la .deiv.",    "la .din.",   "la .erik.",    "la .iztcak.", "la .djanet.",    "la .djesis.",
+    "la .ken.",     "la .kevn.",  "la .maikyl.", "la .maik.",   "la .pat.",      "la .paul.",
+    "la .stiv.",   "la .timos.",   "la .uaruik.",
     /* PC team */
-    "Bill",    "Eric",   "Keizo",   "Ken",    "Kevin",    "Michael",
-    "Mike",    "Paul",   "Stephen", "Steve",  "Timo",     "Yitzhak",
+    "la .bil.",    "la .erik.",   "la .keizos.",   "la .ken.",    "la .kevn.",    "la .maikyl.",
+    "la .maik.",    "la .paul.",   "la .stefn.", "la .stiv.",  "la .timos.",     "la .iitsxak.",
     /* Amiga team */
-    "Andy",    "Gregg",  "Janne",   "Keni",   "Mike",     "Olaf",
-    "Richard",
+    "la .andis.",    "la .greg.",  "la .djean.",   "la .kenis.",   "la .maik.",     "la .olaf.",
+    "la .ritcard.",
     /* Mac team */
-    "Andy",    "Chris",  "Dean",    "Jon",    "Jonathan", "Kevin",
-    "Wang",
+    "la .andis.",    "la .kris.",  "la .din.",    "la .djon.",    "la .djonaten.", "la .kevn.",
+    "la .uang.",
     /* Atari team */
-    "Eric",    "Marvin", "Warwick",
+    "la .erik.",    "la .marvn.", "la .uaruik.",
     /* NT team */
-    "Alex",    "Dion",   "Michael",
+    "la .aleks.",    "la .dion.",   "la .maikyl.",
     /* OS/2 team */
-    "Helge",   "Ron",    "Timo",
+    "la .y'elges.",   "la .ron.",    "la .timos.",
     /* VMS team */
-    "Joshua",  "Pat",    ""
+    "la .djacuas.",  "la .pat.",    ""
 };
 
 /* return a randomly chosen developer name */
@@ -76,17 +76,17 @@ char *nam;
 
     devnam = dev_name();
     if (!devnam)
-        Strcpy(nam, fmlkind ? "Eve" : "Adam");
-    else if (fmlkind && !!strcmp(devnam, "Janet"))
-        Strcpy(nam, rn2(2) ? "Maud" : "Eve");
+        Strcpy(nam, fmlkind ? "la .iv." : "la .adym.");
+    else if (fmlkind && !!strcmp(devnam, "la .djanyt."))
+        Strcpy(nam, rn2(2) ? "la .maud." : "la .iv.");
     else
         Strcpy(nam, devnam);
 
-    if (fmlkind || !strcmp(nam, "Janet"))
+    if (fmlkind || !strcmp(nam, "la .djanyt."))
         mtmp->female = 1;
     else
         mtmp->female = 0;
-    Strcat(nam, " the ");
+    Strcat(nam, " po'u lo ");
     Strcat(nam, rank_of((int) mtmp->m_lev, monsndx(mtmp->data),
                         (boolean) mtmp->female));
 }
@@ -359,18 +359,18 @@ register struct monst *mtmp;
 {
     static const char *same_class_msg[3] =
         {
-          "I can't win, and neither will you!", "You don't deserve to win!",
-          "Mine should be the honor, not yours!",
+          ".i mi na kakne lomu'e jinga .isi'a do na go'i", ".i do na jerna lomu'e jinga",
+          ".i .eisai mi ponse lo selsla poi do na ponse ce'u",
         },
                       *other_class_msg[3] = {
-                          "The low-life wants to talk, eh?", "Fight, scum!",
-                          "Here is what I have to say!",
+                          ".i xu lo tolba'i cu djica lozu'o tavla", ".i ko ga'isai damba",
+                          ".i .ei mi cusku la'e di'e",
                       };
 
     if (mtmp->mpeaceful)
         return; /* will drop to humanoid talk */
 
-    pline("Talk? -- %s", (mtmp->data == &mons[urole.malenum]
+    pline(".i xu tavla %s", (mtmp->data == &mons[urole.malenum]
                           || mtmp->data == &mons[urole.femalenum])
                              ? same_class_msg[rn2(3)]
                              : other_class_msg[rn2(3)]);
